@@ -2,7 +2,7 @@ Visualization and Analysis of Musculature Prediction in Simulation via Nonlinear
 ======
 *Nicholas Benson*  
 *Massachusetts Institute of Technology*  
-*6.UR Undergraduate Research*
+*6.UR Undergraduate Research, Spring 2016*
 
 ##Abstract
 
