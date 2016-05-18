@@ -1,0 +1,121 @@
+﻿using UnityEngine;
+using System.Collections;
+
+public class MemoryAccumulatorVisualizer : MonoBehaviour {
+
+	public MemoryAccumulator memAccum;
+
+	[Header("Orientation")]
+	public Vector3 senseValueDir = Vector3.right;
+	public Vector3 senseDir = Vector3.up;
+	public Vector3 timeDir = Vector3.forward;
+    public Vector3 groupOffset = Vector3.right * 12F;
+	private float xScale = 1.0f;
+
+	[Header("Per Cube")]
+	public Material cubeMaterial;
+	public float cubeScale = 0.5f;
+
+    private Transform[] group1CubeTs;
+    public string group1NameIdentifier = "Group 1";
+    public Color group1Color = ColorFromRGBAHexString("DB5252FF");
+    private Transform[] group2CubeTs;
+    public string group2NameIdentifier = "Group 2";
+    public Color group2Color = ColorFromRGBAHexString("5652DBFF");
+    private Transform[] unsortedCubeTs;
+    public Color unsortedColor = new Color(1,1,1,1);
+
+    private Creature creature;
+	void Start() {
+		xScale = transform.localScale.x;
+
+		if (!memAccum) {
+			memAccum = GetComponent<MemoryAccumulator> ();
+			if (!memAccum) {
+				Debug.LogError ("No MemoryAccumulator set to be visualized!");
+			}
+		}
+
+        group1CubeTs = new Transform[memAccum.senses.Count * memAccum.memorySpan];
+        group2CubeTs = new Transform[memAccum.senses.Count * memAccum.memorySpan];
+        unsortedCubeTs = new Transform[memAccum.senses.Count * memAccum.memorySpan];
+		for (int t = 0; t < memAccum.memorySpan; t++) {
+            for (int i = 0; i < memAccum.senses.Count; i++) {
+				GameObject cube = GameObject.CreatePrimitive (PrimitiveType.Cube);
+				cube.transform.SetParent (transform);
+				cube.transform.localScale = Vector3.one * cubeScale;
+				Destroy (cube.GetComponent<Collider> ());
+				if (cubeMaterial)
+					cube.GetComponent<Renderer> ().material = cubeMaterial;
+                if (cube.name.Contains(group1NameIdentifier)) {
+                    group1CubeTs [i + t * memAccum.senses.Count] = cube.transform;
+                }
+                else if (cube.name.Contains(group2NameIdentifier)) {
+                    group2CubeTs [i + t * memAccum.senses.Count] = cube.transform;
+                }
+                else {
+                    unsortedCubeTs [i + t * memAccum.senses.Count] = cube.transform;
+                }
+			}
+		}
+
+        creature = GameObject.FindObjectOfType<Creature>();
+        if (!creature) {
+            Debug.LogError("Memory Accumulator Visualizer relies on a Creature for sense indices -> names");
+        }
+
+	}
+
+    private int[] groupedSenseIdcs = new int[] { 0, 0, 0 };
+	void FixedUpdate() {
+		for (int t = 0; t < memAccum.memorySpan; t++) {
+            for (int i = 0; i < memAccum.senses.Count; i++) {
+				int senseValue = memAccum.GetSenseValue (i, t);
+                string senseName = creature.GetSenseMemoryName(i);
+                Transform cubeT;
+                Vector3 fullGroupOffset;
+                int curGroupSenseIdx;
+                if (senseName.Contains(group1NameIdentifier)) {
+                    fullGroupOffset = groupOffset * 0;
+                    cubeT = group1CubeTs [i + t * memAccum.senses.Count];
+                    curGroupSenseIdx = groupedSenseIdcs[0]++;
+                    cubeT.GetComponent<Renderer>().material.color = group1Color;
+                }
+                else if (senseName.Contains(group2NameIdentifier)) {
+                    fullGroupOffset = groupOffset * 1;
+                    cubeT = group2CubeTs [i + t * memAccum.senses.Count];
+                    curGroupSenseIdx = groupedSenseIdcs[1]++;
+                    cubeT.GetComponent<Renderer>().material.color = group2Color;
+                }
+                else {
+                    fullGroupOffset = groupOffset * 2;
+                    cubeT = unsortedCubeTs [i + t * memAccum.senses.Count];
+                    curGroupSenseIdx = groupedSenseIdcs[2]++;
+                    cubeT.GetComponent<Renderer>().material.color = unsortedColor;
+                }
+
+                if (cubeT) {
+                    cubeT.localPosition =
+                        (((senseValueDir * senseValue) + (senseDir * curGroupSenseIdx) + (timeDir * t))
+                            * xScale)
+                        + fullGroupOffset;
+//                    Debug.Log("(senseValueDir * senseValue)" + (senseValueDir * senseValue));
+//                    Debug.Log("(senseDir * curGroupSenseIdx)" + (senseDir * curGroupSenseIdx));
+//                    Debug.Log("(timeDir * t)" + (timeDir * t));
+                }
+			}
+            for (int i = 0; i < groupedSenseIdcs.Length; i++) {
+                groupedSenseIdcs[i] = 0;
+            }
+		}
+	}
+
+    static Color ColorFromRGBAHexString(string hex) {
+        byte r = byte.Parse(hex.Substring(0, 2), System.Globalization.NumberStyles.HexNumber);
+        byte g = byte.Parse(hex.Substring(2, 2), System.Globalization.NumberStyles.HexNumber);
+        byte b = byte.Parse(hex.Substring(4, 2), System.Globalization.NumberStyles.HexNumber);
+        byte a = byte.Parse(hex.Substring(6, 2), System.Globalization.NumberStyles.HexNumber);
+        return new Color32(r, g, b, a);
+    }
+
+}

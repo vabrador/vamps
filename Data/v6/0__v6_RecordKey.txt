@@ -1,0 +1,4 @@
+INPUT
+Body->Neck Muscle 1 Length Sense, Body->Neck Muscle 2 Length Sense, Body->Neck Muscle 3 Length Sense, Body->Neck Muscle 4 Length Sense, Body->Neck Muscle 5 Length Sense, Body->Neck Muscle 6 Length Sense, Neck->Head Muscle 1 Length Sense, Neck->Head Muscle 2 Length Sense, Neck->Head Muscle 3 Length Sense, Neck->Head Muscle 4 Length Sense, Neck->Head Muscle 5 Length Sense, Neck->Head Muscle 6 Length Sense, Neck->Head Twist Muscle 1 Length Sense, Neck->Head Twist Muscle 2 Length Sense, Neck->Head Twist Muscle 3 Length Sense, Neck->Head Twist Muscle 4 Length Sense, Neck->Head Twist Muscle 5 Length Sense, Neck->Head Twist Muscle 6 Length Sense
+OUTPUT
+Nose Tracker X Sense, Nose Tracker Y Sense, Nose Tracker Z Sense
