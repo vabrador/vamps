@@ -10,4 +10,4 @@ NARX networks operate on time-domain signal windows and output feedback windows 
 
 ##Full Text
 
-The full text of the VAMPS paper can be found [[here]] <-- yeah uh, fix that
+The full text of the VAMPS paper can be found [here.] (http://omono.me/vamps)
