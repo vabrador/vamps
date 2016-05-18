@@ -51,8 +51,8 @@ spring.anchor = proximalTendon.transform.localPosition;
 
 Muscles as defined by Balancer also each request and receive memory registers for two floats as senses available to the simulated creature, indicating that muscle's current length (in Unity units, or meters), and that muscle's current contraction state, a dimensionless number from 0 to 10 that is converted every timestep into the muscle's spring constant. The appendage constructed for this application of Balancer defines 18 muscles, configured in a three-by-six hexagonal structure extending from a fixed-state body to a dynamic neck body and dynamic head body. The first six muscles connect the body to the neck, the second six muscles connect from the neck to the head, and the last six muscles are divided into a left-twist group and a right-twist group, where each group pulls and counter-pulls to apply a leftward or rightward rotation to the neck, rather than pulling the neck down to the left or right. Accordingly, these muscles are referred to in groups of six as "Body->Neck Muscles," "Neck->Head Muscles," or "Neck->Head Twist Muscles" (Figure 1).
 
-    [IMAGE: Figure 1: Selecting the Muscle objects in the scene reveals the structure enabling the musculature to function.]
-    ![Figure 1](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "Logo Title Text 1")
+![Figure 1](https://raw.githubusercontent.com/nickjbenson/vamps/master/Paper/images/Figure1_musculature.png "Figure 1 - Creature Musculature")
+*Figure 1. Selecting the Muscle objects in the scene reveals the structure of the creature's musculature. The Muscles change color from cyan (none) to red (maximum) to indicate how contracted they are. This figure shows the initialized state for the creature in training and implementation, with two back muscles fully contracted and the rest of the musculature at rest.*
 
 
 ###Starting Out with Neural Networks
